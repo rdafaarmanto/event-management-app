@@ -39,6 +39,7 @@ export async function GET(
     return NextResponse.json(
       {
         message: "Event fetched successfully.",
+        event,
       },
       { status: 200 },
     );
