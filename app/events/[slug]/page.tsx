@@ -1,4 +1,7 @@
 import BookEvent from "@/components/BookEvent";
+import EventCard from "@/components/EventCard";
+import { IEvent } from "@/database";
+import { getSimilarEventBySlug } from "@/lib/actions/event.actions";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
@@ -51,6 +54,8 @@ const EventDetailsPage = async ({
   const { event } = await request.json();
 
   if (!event) return notFound();
+
+  const similarEvents: IEvent[] = await getSimilarEventBySlug(slug);
 
   return (
     <section id="event">
@@ -119,6 +124,15 @@ const EventDetailsPage = async ({
             <BookEvent />
           </div>
         </aside>
+      </div>
+      <div className="flex w-full flex-col gap-4 pt-20">
+        <h2>Similar Events</h2>
+        <div className="events">
+          {similarEvents.length > 0 &&
+            similarEvents.map((similarEvent: IEvent) => (
+              <EventCard {...similarEvent} />
+            ))}
+        </div>
       </div>
     </section>
   );
